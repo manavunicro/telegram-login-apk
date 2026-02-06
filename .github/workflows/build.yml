@@ -26,10 +26,16 @@ jobs:
           libssl-dev \
           ccache
 
-    - name: Install Python build tools
+    - name: Install Python tools
       run: |
         pip3 install --upgrade pip
         pip3 install cython buildozer
+
+    - name: Accept Android SDK licenses
+      run: |
+        mkdir -p ~/.android
+        touch ~/.android/repositories.cfg
+        yes | sdkmanager --licenses || true
 
     - name: Build APK
       run: |
