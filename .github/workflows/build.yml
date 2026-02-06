@@ -14,12 +14,16 @@ jobs:
       PATH: /home/runner/android-sdk/cmdline-tools/latest/bin:/home/runner/android-sdk/platform-tools:$PATH
 
     steps:
+    - name: Ensure tar is installed
+      run: |
+        sudo apt update
+        sudo apt install -y tar
+
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Install system dependencies
       run: |
-        sudo apt update
         sudo apt install -y \
           python3 \
           python3-pip \
