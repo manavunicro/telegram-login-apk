@@ -8,46 +8,32 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      ANDROID_HOME: /home/runner/android-sdk
-      ANDROID_SDK_ROOT: /home/runner/android-sdk
-      PATH: /home/runner/android-sdk/cmdline-tools/latest/bin:/home/runner/android-sdk/platform-tools:$PATH
-
     steps:
-    - name: Ensure tar is installed
-      run: |
-        sudo apt update
-        sudo apt install -y tar
-
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Set up Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Set up Android SDK
+      uses: android-actions/setup-android@v3
+
     - name: Install system dependencies
       run: |
-        sudo apt install -y \
+        apt-get update
+        apt-get install -y \
           python3 \
           python3-pip \
-          openjdk-17-jdk \
-          unzip \
+          git \
           zip \
-          wget \
+          unzip \
           build-essential \
           libffi-dev \
           libssl-dev \
           ccache
-
-    - name: Install Android SDK Command Line Tools
-      run: |
-        mkdir -p $ANDROID_HOME/cmdline-tools
-        cd $ANDROID_HOME
-        wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdline.zip
-        unzip cmdline.zip
-        mv cmdline-tools $ANDROID_HOME/cmdline-tools/latest
-
-    - name: Accept Android SDK licenses
-      run: |
-        yes | sdkmanager --licenses
-        sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.2"
 
     - name: Install Python build tools
       run: |
