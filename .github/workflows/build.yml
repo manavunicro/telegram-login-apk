@@ -9,17 +9,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
     - name: Install system dependencies
       run: |
         sudo apt update
-        sudo apt install -y python3 python3-pip openjdk-17-jdk zip unzip
+        sudo apt install -y \
+          python3 \
+          python3-pip \
+          openjdk-17-jdk \
+          zip \
+          unzip \
+          build-essential \
+          libffi-dev \
+          libssl-dev \
+          ccache
 
-    - name: Install Buildozer
+    - name: Install Python build tools
       run: |
-        pip3 install buildozer
-        sudo apt install -y build-essential ccache libffi-dev libssl-dev
+        pip3 install --upgrade pip
+        pip3 install cython buildozer
 
     - name: Build APK
       run: |
